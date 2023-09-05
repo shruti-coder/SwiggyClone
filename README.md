@@ -1,0 +1,18 @@
+- SWIGGY CLONE
+  - Header
+    - logo
+    - nav Items
+  - Body
+    - searchbar
+    - ResturantContainer
+    - resturantCard
+        - image
+        - name of resturant
+        - cuisine,star rating
+        - delivery time
+  - footer
+    - copyright
+    - links
+    - address
+    - contact
+ 
