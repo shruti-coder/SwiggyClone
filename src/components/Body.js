@@ -3,27 +3,28 @@ import { resList } from "../utils/mockData";
 import { useState, useEffect } from "../../node_modules/react";
 import { Shimmer } from "./Shimmer";
 import { Link } from "react-router-dom";
+import useOnlineStatus from "../utils/useOnlineStatus";
 export const Body = () => {
   const [lisResList, setLisResList] = useState([]);
   const [filteredList, setFilteredList] = useState([]);
   const [searchText, setSearchText] = useState("");
-
+  const onlineStatus=useOnlineStatus();
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = async () => {
     const data = await fetch(
-    "https://www.swiggy.com/dapi/restaurants/list/v5?lat=22.572646&lng=88.36389500000001&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING" 
-      );
+      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=22.572646&lng=88.36389500000001&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
+    );
     const json = await data.json();
     console.log(json);
     //Optional Chaining
     setLisResList(
-      json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants
+      json?.data?.cards[5]?.card?.card?.gridElements?.infoWithStyle?.restaurants
     );
     setFilteredList(
-      json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants
+      json?.data?.cards[5]?.card?.card?.gridElements?.infoWithStyle?.restaurants
     );
   };
 
@@ -32,7 +33,17 @@ export const Body = () => {
   //   return <Shimmer />;
   // }
 
-  return lisResList === undefined ? (
+  if(onlineStatus===false){
+    return (
+      <div>
+        <h1>
+          Looks Like you are offline and wants to continue please get online!!!
+        </h1>
+      </div>
+    )
+  }
+
+  return lisResList.length===0 ? (
     <Shimmer />
   ) : (
     <div className="body">
@@ -47,12 +58,12 @@ export const Body = () => {
               setSearchText(e.target.value);
             }}
           />
+           </div>
+          <div className="buttons"> 
           <button
-            className="btn"
+            className="btns"
             onClick={() => {
               console.log("List of Resturant" + lisResList);
-              // if(searchText.length !== 0)
-
               const filterResult = lisResList.filter((res) =>
                 res.info.name.toLowerCase().includes(searchText.toLowerCase())
               );
@@ -61,10 +72,19 @@ export const Body = () => {
           >
             Search
           </button>
-        </div>
+          <button
+            className="btns"
+            onClick={() => {
+              setSearchText("");
+              setFilteredList(lisResList);
+            }}
+          >
+            clear
+          </button>
+       
 
         <button
-          className="btnfilter"
+          className="btns"
           onClick={() => {
             const filter = lisResList.filter((res) => res.info.avgRating > 4.5);
             console.log(filter);
@@ -72,10 +92,10 @@ export const Body = () => {
           }}
         >
           {" "}
-          Click to filter{" "}
+          Click to filter
         </button>
       </div>
-
+      </div>
       <div className="resturant-container">
         {/* {console.log("listcard :", lisResList)} */}
 

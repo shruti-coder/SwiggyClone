@@ -23,7 +23,7 @@
   margin: 5px;
   padding: 2px;
   width: 250px;
-  /* height:350px; */
+  height:350px;
   background-color: #f0f0f0;
 }
 .res-card h3,
@@ -61,8 +61,17 @@ h4 {
   display: flex;
   padding:  10px;
   margin: 10px;
+  align-items: center;
 }
 .input-box
 {
   padding: 0px 5px;
+  margin: 2px;
+}
+.buttons{
+  margin: 2px 2px;
+  padding: 4px;
+}
+.btns{
+  margin: 3px ;
 }
