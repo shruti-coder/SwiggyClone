@@ -1,4 +1,4 @@
-import { ResturantCard } from "./Resturant";
+import { ResturantCard,withPromotedLabel } from "./ResturantCard";
 import { resList } from "../utils/mockData";
 import { useState, useEffect } from "../../node_modules/react";
 import { Shimmer } from "./Shimmer";
@@ -9,6 +9,8 @@ export const Body = () => {
   const [filteredList, setFilteredList] = useState([]);
   const [searchText, setSearchText] = useState("");
   const onlineStatus=useOnlineStatus();
+  // const ResturantPromoted=withPromotedLabel(ResturantCard);
+  
   useEffect(() => {
     fetchData();
   }, []);
@@ -46,22 +48,22 @@ export const Body = () => {
   return lisResList.length===0 ? (
     <Shimmer />
   ) : (
-    <div className="body">
+    <div className="body ">
       {console.log("i am rendering")}
-      <div className="filter-btn">
-        <div className="input-box">
+      <div className="flex">
+        <div className="input-box my-4 p-4">
           <input
             type="text"
-            className="input-value"
+            className="border border-solid  border-black"
             value={searchText}
             onChange={(e) => {
               setSearchText(e.target.value);
             }}
           />
            </div>
-          <div className="buttons"> 
-          <button
-            className="btns"
+          <div className="flex"> 
+          <button className=" my-8 px-3 bg-green-200  border border-solid border-black rounded"
+            // className="btns"
             onClick={() => {
               console.log("List of Resturant" + lisResList);
               const filterResult = lisResList.filter((res) =>
@@ -73,20 +75,20 @@ export const Body = () => {
             Search
           </button>
           <button
-            className="btns"
+            className=" mx-2 px-3 my-8  bg-red-200  border border-solid border-black rounded"
             onClick={() => {
               setSearchText("");
               setFilteredList(lisResList);
             }}
           >
-            clear
+            Clear
           </button>
        
 
         <button
-          className="btns"
+          className="mx-2 px-3 my-8  bg-purple-200  border border-solid border-black rounded"
           onClick={() => {
-            const filter = lisResList.filter((res) => res.info.avgRating > 4.5);
+            const filter = lisResList.filter((res) => res.info.avgRating >4.2);
             console.log(filter);
             setFilteredList(filter);
           }}
@@ -96,7 +98,7 @@ export const Body = () => {
         </button>
       </div>
       </div>
-      <div className="resturant-container">
+      <div className="flex flex-wrap">
         {/* {console.log("listcard :", lisResList)} */}
 
         {filteredList.map((resturant) => (
@@ -104,7 +106,7 @@ export const Body = () => {
             key={resturant?.info?.id}
             to={"/resturants/" + resturant?.info?.id}
           >
-            <ResturantCard resData={resturant} />
+          <ResturantCard resData={resturant} />
           </Link>
         ))}
         {/* <ResturantCard resData={resList[0]} /> */}

@@ -2,6 +2,7 @@ import { useEffect,useState } from "react";
 import { useParams } from "react-router-dom";
 // import { MENU_URL } from "../utils/contants";
 import useResturantMenu from "../utils/useResturantMenu";
+import ResturantCategory from "./ResturantCategory";
 import { Shimmer } from "./Shimmer";
 const ResturantMenu=()=>{
 
@@ -27,25 +28,32 @@ if(menuName===null) return <Shimmer/>;
 const {name,cuisines,costForTwoMessage}= menuName?.data?.cards[0]?.card?.card?.info;
 
 const {itemCards}= menuName?.data?.cards[2]?.groupedCard.cardGroupMap.REGULAR.cards[5].card.card;
+ 
+console.log( menuName?.data?.cards[2]?.groupedCard.cardGroupMap.REGULAR.cards);
 
+const category= menuName?.data?.cards[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards?.filter((c)=>c.card?.card ?.["@type"]==="type.googleapis.com/swiggy.presentation.food.v2.ItemCategory");
 
+// console.log(category);
     return(
-        <div className="menu">
-            <h1>{name}</h1>
-            <p>{cuisines.join(", ")}-{costForTwoMessage}</p>
-            <ul>
-                {itemCards.map((item) => (
-                 <li key={item.card.info.id}> 
-                    {item.card.info.name}- {"Rs."}{item.card.info.price/100}
-                </li>
-
-                ))}
-            {/* <li>{itemCards[0].card.info.name}</li>
-            <li>{itemCards[1].card.info.name}</li>
-            <li>Coke</li> */}
-            </ul>
+        <div className="text-center">
+            <h1 className="font-bold my-6 text-2xl">{name}</h1>
+            <p className="font-bold text-lg">{cuisines.join(", ")}-{costForTwoMessage}</p>
+            {console.log(category)}
+            {category.map((c)=>(<ResturantCategory key={category?.card?.card?.title} data={c?.card?.card}/>
+                    ))}
         </div>
     
     );
 };
 export default ResturantMenu;
+
+{/* <ul>
+            {itemCards.map((item) => (
+                 <li key={item.card.info.id}> 
+                    {item.card.info.name}- {"Rs."}{item.card.info.price/100}
+                </li>              
+                ))} */}
+            {/* <li>{itemCards[0].card.info.name}</li>
+            <li>{itemCards[1].card.info.name}</li>
+            <li>Coke</li> */}
+            {/* </ul> */}
